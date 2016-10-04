@@ -39,11 +39,12 @@ public class Sequence {
                     }                
                     BigInteger number = new BigInteger(pattern);
                     BigInteger temp = new BigInteger(pattern);
-                    while (pattern.length() <= subsequence.length()) {
+                    while (pattern.length() <= digits.length*2) {
                         temp = temp.add(BigInteger.ONE);
                         pattern += temp;
                     }
-                    if (pattern.contains(subsequence)) {
+                    int j = t == 0 ? 0 : i - t;
+                    if (pattern.substring(j, j+digits.length).contains(subsequence)) {
                         if (minNumber == null || minNumber.compareTo(number) > 0) {
                             minNumber = number;
                             minT = t;
