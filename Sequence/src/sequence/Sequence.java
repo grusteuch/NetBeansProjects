@@ -18,33 +18,32 @@ public class Sequence {
         Scanner reader = new Scanner(System.in);
         while (reader.hasNextLine()) {
             String subsequence = reader.nextLine();
-            char[] digits = subsequence.toCharArray();
             BigInteger minNumber = null;
             int minT = UNDEFINED;
-            for (int i = 1; i <= digits.length; i++) {
+            int length = subsequence.length();
+            for (int i = 1; i <= length; i++) {
                 if (minNumber != null) {
                     break;
                 }
                 for (int t = 0; t < i; t++) {
-                    String pattern = "";
-                    for (int k = t; k < i; k++) {
-                        if (k == i-1 && t > 0 && digits[t-1] - '0' == 9) {
-                            pattern += ((digits[k] - '0') - 1);
-                        } else {
-                            pattern += digits[k];
-                        }
+                    if (subsequence.charAt(t) == '0') {
+                        continue;
                     }
-                    for (int k = 0; k < t; k++) {
-                        pattern += digits[k];
-                    }                
+                    BigInteger num = new BigInteger(subsequence.substring(t, i));
+                    String p1 = subsequence.substring(0, t);
+                    if (p1.length() > 0 && p1.replace("9", "").length() == 0) {
+                        num = num.subtract(BigInteger.ONE);
+                    }
+                    String p2 = String.valueOf(num);
+                    String pattern = p2 + p1;
                     BigInteger number = new BigInteger(pattern);
                     BigInteger temp = new BigInteger(pattern);
-                    while (pattern.length() <= digits.length*2) {
+                    while (pattern.length() < length*2) {
                         temp = temp.add(BigInteger.ONE);
                         pattern += temp;
                     }
                     int j = t == 0 ? 0 : i - t;
-                    if (pattern.substring(j, j+digits.length).contains(subsequence)) {
+                    if (pattern.substring(j, j+length).contains(subsequence)) {
                         if (minNumber == null || minNumber.compareTo(number) > 0) {
                             minNumber = number;
                             minT = t;
